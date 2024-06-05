@@ -1,7 +1,4 @@
-# Purpose: Produces products, streaming sales transactions, and restocking activities to Kafka topics
-# Author:  Gary A. Stafford
-# Date: 2022-08-29
-# Instructions: Modify the configuration.ini file to meet your requirements.
+
 
 import configparser
 import json

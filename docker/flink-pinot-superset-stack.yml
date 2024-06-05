@@ -1,11 +1,11 @@
 # Command: docker stack deploy streaming-stack --compose-file docker/flink-pinot-superset-stack.yml
-# Gary A. Stafford (2022-09-14)
-# Updated: 2022-12-26
+# Gary A. Stafford (2022-09-14) & Damian Stevens (forked version)
+# Updated: 2024-05-28
 
 version: "3.9"
 services:
   zookeeper:
-    image: "zookeeper:3.8.0"
+    image: "zookeeper:3.9.2"
     hostname: zookeeper
     ports:
       - "2181:2181"
@@ -16,7 +16,7 @@ services:
     networks:
       - streaming-stack
   pinot-controller:
-    image: "apachepinot/pinot:0.11.0-SNAPSHOT-a6f5e89-20221226"
+    image: "apachepinot/pinot:latest"
     command: "StartController -zkAddress zookeeper:2181"
     ports:
       - "9000:9000"
@@ -27,7 +27,7 @@ services:
     networks:
       - streaming-stack
   pinot-broker:
-    image: "apachepinot/pinot:0.11.0-SNAPSHOT-a6f5e89-20221226"
+    image: "apachepinot/pinot:latest"
     command: "StartBroker -zkAddress zookeeper:2181"
     ports:
       - "8099:8099"
@@ -38,7 +38,7 @@ services:
     networks:
       - streaming-stack
   pinot-server:
-    image: "apachepinot/pinot:0.11.0-SNAPSHOT-a6f5e89-20221226"
+    image: "apachepinot/pinot:latest"
     command: "StartServer -zkAddress zookeeper:2181"
     ports:
       - "8098:8098"
@@ -49,7 +49,7 @@ services:
     networks:
       - streaming-stack
   kafka:
-    image: "bitnami/kafka:3.3.1"
+    image: "bitnami/kafka:latest"
     ports:
       - "9092:9092"
     environment:
@@ -86,7 +86,7 @@ services:
     networks:
       - streaming-stack
   jobmanager:
-    image: "flink:1.16.0"
+    image: "flink:1.19.0"
     command: jobmanager
     ports:
       - "8081:8081"
@@ -97,7 +97,7 @@ services:
     networks:
       - streaming-stack
   taskmanager:
-    image: "flink:1.16-scala_2.12-java11"
+    image: "flink:1.19.0-scala_2.12-jav11"
     depends_on:
       - jobmanager
     command: taskmanager
